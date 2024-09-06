@@ -1,9 +1,19 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const port = process.env.PORT || 5844;
+const mongoURI = process.env.MONGO_URI;
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri =
-  "mongodb+srv://exdreifoprasetyo:rMKFqJEgEA5aF5V6@cluster0.fio1n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+//app
+const app = express();
+
+//middlewares
+app.use(express.json());
+app.use(cors());
+
+//mongo URI
+const client = new MongoClient(mongoURI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -11,18 +21,24 @@ const client = new MongoClient(uri, {
   },
 });
 
-async function run() {
+const run = async () => {
   try {
-    // Connect the client to the server (optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
   }
-}
-run().catch(console.dir);
+};
+
+run().catch((error) => console.log);
+
+app.get("/", (req, res) => {
+  res.send("Car Junction Backend Server Running...");
+});
+
+app.listen(port, () => {
+  console.log(console.log(`Server is running on port ${port}`));
+});
