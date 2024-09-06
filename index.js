@@ -7,10 +7,13 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 
 //app
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 //middlewares
 app.use(express.json());
 app.use(cors());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //mongo URI
 const client = new MongoClient(mongoURI, {
