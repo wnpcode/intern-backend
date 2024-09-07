@@ -5,7 +5,7 @@
     "description": "A simple CRUD API",
     "version": "1.0.0"
   },
-  "host": "localhost:8000",
+  "host": "https://intern-backend-seven.vercel.app/",
   "basePath": "/",
   "schemes": [
     "http"

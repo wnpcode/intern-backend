@@ -10,9 +10,6 @@ const swaggerFile = require("./swagger.json"); // Your generated Swagger JSON
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-// app.listen(8000, () => {
-//   console.log("server is listening on port 8000");
-// });
 const logger = (req, res, next) => {
   console.log(req.url);
   console.log(req.params);
