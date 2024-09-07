@@ -1,47 +1,61 @@
 const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-const port = process.env.PORT || 5844;
-const mongoURI = process.env.MONGO_URI;
-const { MongoClient, ServerApiVersion } = require("mongodb");
-
-//app
+const mongoose = require("mongoose");
 const app = express();
+const products = require("./data.js");
+const products_routes = require("./routes/products.js");
+const users_routes = require("./routes/users.js");
+require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+const swaggerFile = require("./swagger.json"); // Your generated Swagger JSON
 
-//middlewares
-app.use(express.json());
-app.use(cors());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-//mongo URI
-const client = new MongoClient(mongoURI, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-const run = async () => {
-  try {
-    await client.connect();
-
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-  }
+// app.listen(8000, () => {
+//   console.log("server is listening on port 8000");
+// });
+const logger = (req, res, next) => {
+  console.log(req.url);
+  console.log(req.params);
+  console.log(req.query);
+  next();
 };
 
-run().catch((error) => console.log);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then((result) => app.listen(8000))
+  .catch((err) => console.log(Error));
 
-app.get("/", (req, res) => {
-  res.send("Car Junction Backend Server Running...");
+// Handle connection events
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose connected to the database");
 });
 
-app.listen(port, () => {
-  console.log(console.log(`Server is running on port ${port}`));
+mongoose.connection.on("error", (err) => {
+  console.error("Mongoose connection error:", err);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.log("Mongoose disconnected");
+});
+
+app.use(logger);
+app.use(express.json()); // parse json body content
+
+// routes
+app.use("/products", products_routes);
+app.use("/users", users_routes);
+
+// Graceful shutdown
+process.on("SIGINT", async () => {
+  console.log("SIGINT signal received: closing MongoDB connection");
+  await mongoose.connection.close();
+  console.log("MongoDB connection closed");
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM signal received: closing MongoDB connection");
+  await mongoose.connection.close();
+  console.log("MongoDB connection closed");
+  process.exit(0);
 });
