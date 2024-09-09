@@ -19,7 +19,11 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs, { customCssUrl: process.env.CSS_URL })
+);
 
 const logger = (req, res, next) => {
   console.log(req.url);
