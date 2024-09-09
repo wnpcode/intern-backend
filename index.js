@@ -14,7 +14,8 @@ const swaggerOptions = {
       version: "1.0.0",
     },
   },
-  apis: ["./src/routes/*.js"],
+  // apis: ["./src/routes/*.js"],
+  apis: [path.join(__dirname, "/src/routes/*.js")],
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use(express.static(path.join(__dirname, "public")));
