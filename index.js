@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
-const users_routes = require("./routes/users.js");
+const users_routes = require("./src/routes/users.js");
 require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
@@ -10,11 +10,11 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Your API Title",
+      title: "Test REST",
       version: "1.0.0",
     },
   },
-  apis: ["./routes/*.js"],
+  apis: ["./src/routes/*.js"],
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use(express.static(path.join(__dirname, "public")));
