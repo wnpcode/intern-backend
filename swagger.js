@@ -8,6 +8,18 @@ const doc = {
     title: "My API",
     description: "A simple CRUD API",
   },
+  definitions: {
+    User: {
+      name: "John Doe",
+      email: "john@example.com",
+      password: "password123",
+    },
+    UserResponse: {
+      id: 1,
+      name: "John Doe",
+      email: "john@example.com",
+    },
+  },
   //   tags: [
   //     {
   //       name: "users",
@@ -18,8 +30,8 @@ const doc = {
   //       description: "Operations related to products",
   //     },
   //   ],
-  // host: "localhost:8000", // Change this if you're using a different host
-  host: "https://intern-backend-seven.vercel.app/", // Change this if you're using a different host
+  host: "localhost:8000", // Change this if you're using a different host
+  // host: "https://intern-backend-seven.vercel.app/", // Change this if you're using a different host
   schemes: ["http"],
 };
 

@@ -5,11 +5,9 @@ const { Schema } = mongoose;
 const geoSchema = new Schema({
   lat: {
     type: String, // Use Number if lat/lng should be numeric
-    required: true,
   },
   lng: {
     type: String, // Use Number if lat/lng should be numeric
-    required: true,
   },
 });
 
@@ -17,23 +15,18 @@ const geoSchema = new Schema({
 const addressSchema = new Schema({
   city: {
     type: String,
-    required: true,
   },
   geo: {
     type: geoSchema,
-    required: true,
   },
   street: {
     type: String,
-    required: true,
   },
   suite: {
     type: String,
-    required: true,
   },
   zipcode: {
     type: String,
-    required: true,
   },
 });
 
@@ -41,15 +34,12 @@ const addressSchema = new Schema({
 const companySchema = new Schema({
   bs: {
     type: String,
-    required: true,
   },
   catchPhrase: {
     type: String,
-    required: true,
   },
   name: {
     type: String,
-    required: true,
   },
 });
 
@@ -57,22 +47,18 @@ const companySchema = new Schema({
 const UserSchema = new Schema({
   _id: {
     type: Schema.Types.ObjectId,
-    required: true,
+    default: () => new mongoose.Types.ObjectId(),
   },
   address: {
     type: addressSchema,
-    required: true,
+    default: {},
   },
   company: {
     type: companySchema,
-    required: true,
+    default: {},
   },
   email: {
     type: String,
-    required: true,
-  },
-  id: {
-    type: Number,
     required: true,
   },
   name: {
@@ -89,7 +75,7 @@ const UserSchema = new Schema({
   },
   website: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 

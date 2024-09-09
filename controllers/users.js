@@ -12,9 +12,17 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  User.create(req.body)
-    .then((result) => res.status(200).json({ result }))
-    .catch((error) => res.status(500).json({ msg: error }));
+  let body = { ...req.body, _id: null };
+  // delete body._id;
+  console.log(body);
+  User.create(body)
+    .then((result) => {
+      return res.status(200).json({ result });
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ msg: error });
+    });
 };
 
 const updateUser = (req, res) => {
