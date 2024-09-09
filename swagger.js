@@ -30,8 +30,8 @@ const doc = {
   //       description: "Operations related to products",
   //     },
   //   ],
-  host: "localhost:8000", // Change this if you're using a different host
-  // host: "https://intern-backend-seven.vercel.app/", // Change this if you're using a different host
+  // host: "localhost:8000", // Change this if you're using a different host
+  host: "https://intern-backend-seven.vercel.app/", // Change this if you're using a different host
   schemes: ["http"],
 };
 
