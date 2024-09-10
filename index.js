@@ -19,7 +19,7 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 const CSS_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   "/api-docs",
