@@ -1,11 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
-const app = express();
 const users_routes = require("./src/routes/users.js");
-require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
+const path = require("path");
+const cors = require("cors");
+
+require("dotenv").config();
+const app = express();
+
+// swagger
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
@@ -31,6 +35,9 @@ app.use(
     customCssUrl: CSS_URL,
   })
 );
+
+// cors
+app.use(cors());
 
 const logger = (req, res, next) => {
   console.log(req.url);
