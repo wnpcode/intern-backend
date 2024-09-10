@@ -11,6 +11,7 @@ const swaggerOptions = {
     openapi: "3.0.0",
     info: {
       title: "Test REST",
+      description: "coba cak",
       version: "1.0.0",
     },
   },
