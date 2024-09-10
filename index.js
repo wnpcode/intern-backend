@@ -18,11 +18,13 @@ const swaggerOptions = {
   apis: [path.join(__dirname, "/src/routes/*.js")],
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
+const CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocs, { customCssUrl: process.env.CSS_URL })
+  swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
 );
 
 const logger = (req, res, next) => {
