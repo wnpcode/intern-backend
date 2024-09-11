@@ -1,8 +1,22 @@
 const User = require("../models/User.js");
-const getUsers = (req, res) => {
-  User.find({})
-    .then((result) => res.status(200).json({ result }))
-    .catch((error) => res.status(500).json({ msg: error }));
+const getUsers = async (req, res) => {
+  try {
+    const { page = 1, size = 5 } = req.query;
+    const users = await User.find()
+      .limit(size * 1)
+      .skip((page - 1) * size)
+      .sort({ createdAt: -1 });
+    const count = await User.countDocuments();
+    return res.status(200).json({
+      content: users,
+      totalPages: Math.ceil(count / size),
+      currentPage: page,
+      size,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: error });
+  }
 };
 
 const getUser = (req, res) => {
@@ -13,8 +27,6 @@ const getUser = (req, res) => {
 
 const createUser = (req, res) => {
   let body = { ...req.body, _id: null };
-  // delete body._id;
-  console.log(body);
   User.create(body)
     .then((result) => {
       return res.status(200).json({ result });

@@ -21,6 +21,13 @@ const {
  *   get:
  *     summary: Get all users
  *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         type: integer
+ *       - in: query
+ *         name: size
+ *         type: integer
  *     responses:
  *       200:
  *         description: List of users

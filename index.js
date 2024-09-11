@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const products_routes = require("./src/routes/products.js");
 const users_routes = require("./src/routes/users.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const path = require("path");
 const cors = require("cors");
+const morgan = require("morgan"); //import morgan
 
 require("dotenv").config();
 const app = express();
@@ -38,13 +40,15 @@ app.use(
 
 // cors
 app.use(cors());
+app.use(morgan("tiny")); // log the request for debugging
 
-const logger = (req, res, next) => {
-  console.log(req.url);
-  console.log(req.params);
-  console.log(req.query);
-  next();
-};
+// const logger = (req, res, next) => {
+//   console.log(req.url);
+//   console.log(req.params);
+//   console.log(req.query);
+//   next();
+// };
+// app.use(logger);
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -64,11 +68,10 @@ mongoose.connection.on("disconnected", () => {
   console.log("Mongoose disconnected");
 });
 
-app.use(logger);
 app.use(express.json()); // parse json body content
 
 // routes
-// app.use("/products", products_routes);
+app.use("/products", products_routes);
 app.use("/users", users_routes);
 
 // Graceful shutdown
