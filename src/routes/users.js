@@ -25,9 +25,15 @@ const {
  *       - in: query
  *         name: page
  *         type: integer
+ *         default: 1
  *       - in: query
  *         name: size
  *         type: integer
+ *         default: 5
+ *       - in: query
+ *         name: name
+ *         type: string
+ *         default:
  *     responses:
  *       200:
  *         description: List of users
