@@ -1,16 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const products_routes = require("./src/routes/products.js");
-const users_routes = require("./src/routes/users.js");
+// const products_routes = require("./src/routes/products.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan"); //import morgan
+// const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 const app = express();
 
+const users_routes = require("./src/routes/users.js");
+const auth_routes = require("./src/routes/auth.js");
+const { authenticateToken } = require("./src/middlewares/authMiddleware.js");
 // swagger
 const swaggerOptions = {
   swaggerDefinition: {
@@ -20,6 +23,20 @@ const swaggerOptions = {
       description: "coba cak indra",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        BearerAuth: [],
+      },
+    ],
   },
   // apis: ["./src/routes/*.js"],
   apis: [path.join(__dirname, "/src/routes/*.js")],
@@ -42,7 +59,7 @@ app.use(
 app.use(cors());
 app.use(morgan("tiny")); // log the request for debugging
 
-// const logger = (req, res, next) => {
+// const logger = async (req, res, next) => {
 //   console.log(req.url);
 //   console.log(req.params);
 //   console.log(req.query);
@@ -71,8 +88,9 @@ mongoose.connection.on("disconnected", () => {
 app.use(express.json()); // parse json body content
 
 // routes
-app.use("/products", products_routes);
-app.use("/users", users_routes);
+// app.use("/products", products_routes);
+app.use("/auth", auth_routes);
+app.use("/users", authenticateToken, users_routes);
 
 // Graceful shutdown
 process.on("SIGINT", async () => {

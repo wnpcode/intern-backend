@@ -21,6 +21,8 @@ const {
  *   get:
  *     summary: Get all users
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -46,6 +48,8 @@ const {
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -67,6 +71,8 @@ const {
  *   get:
  *     summary: Get a user by ID
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -86,6 +92,8 @@ const {
  *   put:
  *     summary: Update a user by ID
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -111,6 +119,8 @@ const {
  *   delete:
  *     summary: Delete a user by ID
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -133,54 +143,17 @@ const {
  *       type: object
  *       required:
  *         - _id
- *         - address
- *         - company
- *         - email
- *         - id
  *         - name
- *         - phone
- *         - username
- *         - website
+ *         - email
  *       properties:
  *         _id:
  *           type: string
  *           description: User ID
- *         address:
- *           type: object
- *           properties:
- *             city:
- *               type: string
- *             geo:
- *               type: object
- *               properties:
- *                 lat:
- *                   type: string
- *                 lng:
- *                   type: string
- *             street:
- *               type: string
- *             suite:
- *               type: string
- *             zipcode:
- *               type: string
- *         company:
- *           type: object
- *           properties:
- *             bs:
- *               type: string
- *             catchPhrase:
- *               type: string
- *             name:
- *               type: string
  *         email:
  *           type: string
  *         name:
  *           type: string
- *         phone:
- *           type: string
- *         username:
- *           type: string
- *         website:
+ *         password:
  *           type: string
  */
 

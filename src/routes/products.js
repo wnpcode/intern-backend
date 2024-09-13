@@ -8,12 +8,6 @@ const {
   updateProduct,
   deleteProduct,
 } = require("../controllers/products.js");
-/**
- * @swagger
- * tags:
- *   name: Products
- *   description: Product operations
- */
 
 router.get("/", getProducts);
 

@@ -1,10 +1,13 @@
-const User = require("../models/User.js");
+const User = require("../models/UserMflix.js");
+const { generatePassword } = require("../utils/utils.js");
+const bcrypt = require("bcrypt");
 const getUsers = async (req, res) => {
   try {
     const { page = 1, size = 5, name = "" } = req.query;
     let query = {};
     if (name) query["name"] = { $regex: name, $options: "i" };
     const users = await User.find(query)
+      .select("-password")
       .limit(size * 1)
       .skip((page - 1) * size)
       .sort({ createdAt: -1 });
@@ -21,18 +24,23 @@ const getUsers = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: error });
+    return res.status(500).json({ msg: error });
   }
 };
 
-const getUser = (req, res) => {
-  User.findOne({ _id: req.params._id })
-    .then((result) => res.status(200).json({ data: result, status: 200 }))
-    .catch(() => res.status(404).json({ msg: "User not found" }));
+const getUser = async (req, res) => {
+  try {
+    let result = await User.result({ _id: req.params._id });
+    return res.status(200).json({ data: result, status: 200 });
+  } catch (error) {
+    return res.status(404).json({ msg: "User not found" });
+  }
 };
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   let body = { ...req.body, _id: null };
+  if (!req.body.password) body.password = generatePassword(8, true, true, true);
+  body = { ...body, password: await bcrypt.hash(body.password, 10) };
   User.create(body)
     .then((result) => {
       return res.status(200).json({ data: result, status: 200 });
@@ -44,22 +52,28 @@ const createUser = (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  await User.findOneAndUpdate(
-    { _id: req.params._id },
-    { $set: req.body },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .then((result) => res.status(200).json({ data: result, status: 200 }))
-    .catch((error) => res.status(404).json({ msg: "User not found" }));
+  try {
+    let result = await User.findOneAndUpdate(
+      { _id: req.params._id },
+      { $set: req.body },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    return res.status(200).json({ data: result, status: 200 });
+  } catch (error) {
+    return res.status(404).json({ msg: "User not found" });
+  }
 };
 
 const deleteUser = async (req, res) => {
-  await User.findOneAndDelete({ _id: req.params._id })
-    .then((result) => res.status(200).json({ data: result, status: 200 }))
-    .catch((error) => res.status(404).json({ msg: "User not found" }));
+  try {
+    let result = await User.findOneAndDelete({ _id: req.params._id });
+    return res.status(200).json({ data: result, status: 200 });
+  } catch (error) {
+    return res.status(404).json({ msg: "User not found" });
+  }
 };
 
 module.exports = {
