@@ -45,13 +45,11 @@ const checkToken = async (req, res) => {
     return res.status(200).json({ msg: "Token valid" });
   } catch (error) {
     if (["TokenExpiredError", "JsonWebTokenError"].includes(error.name))
-      return res
-        .status(401)
-        .json({
-          msg: error.message
-            .replace("jwt", "token")
-            .replace("signature", "token"),
-        });
+      return res.status(401).json({
+        msg: error.message
+          .replace("jwt", "token")
+          .replace("signature", "token"),
+      });
     return res.status(500).json({ msg: JSON.stringify(error) });
   }
 };
@@ -78,8 +76,23 @@ const forgetPassword = async (req, res) => {
   }
 };
 
+const register = async (req, res) => {
+  let body = { ...req.body, _id: null };
+  if (!req.body.password) body.password = generatePassword(8, true, true, true);
+  body = { ...body, password: await bcrypt.hash(body.password, 10) };
+  User.create(body)
+    .then((result) => {
+      return res.status(200).json({ data: result, status: 200 });
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ msg: error });
+    });
+};
+
 module.exports = {
   login,
   forgetPassword,
   checkToken,
+  register,
 };

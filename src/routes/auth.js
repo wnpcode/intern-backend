@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, checkToken, forgetPassword } = require("../controllers/auth.js");
+const {
+  login,
+  checkToken,
+  forgetPassword,
+  register,
+} = require("../controllers/auth.js");
 const { authenticateToken } = require("../middlewares/authMiddleware.js");
 /**
  * @swagger
@@ -31,6 +36,28 @@ const { authenticateToken } = require("../middlewares/authMiddleware.js");
  *         description: Successful login
  *       404:
  *         description: User not found
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateUser'
+ *     responses:
+ *       201:
+ *         description: User created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  */
 
 /**
@@ -88,6 +115,7 @@ const { authenticateToken } = require("../middlewares/authMiddleware.js");
  */
 
 router.post("/login", login);
+router.post("/register", register);
 router.post("/change_password", forgetPassword);
 router.get("/check_token", authenticateToken, checkToken);
 
