@@ -55,7 +55,7 @@ const {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/CreateUser'
  *     responses:
  *       201:
  *         description: User created
@@ -149,6 +149,18 @@ const {
  *         _id:
  *           type: string
  *           description: User ID
+ *         email:
+ *           type: string
+ *         name:
+ *           type: string
+ *         password:
+ *           type: string
+ *     CreateUser:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *       properties:
  *         email:
  *           type: string
  *         name:
