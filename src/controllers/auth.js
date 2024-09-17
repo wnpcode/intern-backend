@@ -13,7 +13,7 @@ const login = async (req, res) => {
       let token = jwt.sign(
         { id: result._id, username: result.email, type: "user" },
         JWT_SECRET,
-        { expiresIn: "1m" }
+        { expiresIn: "2h" }
       );
       let session = {
         user_id: result._id,
@@ -44,9 +44,10 @@ const checkToken = async (req, res) => {
     jwt.verify(result.jwt, JWT_SECRET);
     return res.status(200).json({ msg: "Token valid" });
   } catch (error) {
-    if (["TokenExpiredError", "JsonWebTokenError"].includes(error.name))
+    console.log(error);
+    if (["TokenExpiredError", "JsonWebTokenError"].includes(error?.name))
       return res.status(401).json({
-        msg: error.message
+        msg: error?.message
           .replace("jwt", "token")
           .replace("signature", "token"),
       });
