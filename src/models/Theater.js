@@ -1,26 +1,72 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Define the Main Schema
-const UserSchema = new Schema({
-  _id: {
-    type: Schema.Types.ObjectId,
-    default: () => new mongoose.Types.ObjectId(),
-  },
-  email: {
+const AddressSchema = new mongoose.Schema({
+  city: {
     type: String,
     required: true,
-    unique: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  street1: {
+    type: String,
+    required: true,
+  },
+  street2: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  zipcode: {
+    type: String,
+    required: true,
+  },
+});
+
+const GeoSchema = new mongoose.Schema({
+  coordinates: {
+    type: [Number], // Array of doubles
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ["Point"], // Assuming 'type' is usually 'Point' for GeoJSON
+  },
+});
+
+const LocationSchema = new mongoose.Schema({
+  address: {
+    type: AddressSchema,
+    required: true,
+  },
+  geo: {
+    type: GeoSchema,
+    required: true,
+  },
+});
+
+const TheaterSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+  },
+  location: {
+    type: LocationSchema,
+    required: true,
+  },
+  theaterId: {
+    type: Number,
+    required: true,
   },
   name: {
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-  },
 });
 
-const User = mongoose.model("User", UserSchema);
+const Theater = mongoose.model("Theater", TheaterSchema);
 
-module.exports = User;
+module.exports = Theater;
