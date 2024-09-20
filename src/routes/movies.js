@@ -21,6 +21,7 @@ const {
  *   /movies:
  *     post:
  *       tags: [Movies]
+ *       security: []
  *       summary: Create a new movie
  *       requestBody:
  *         required: true
@@ -40,6 +41,7 @@ const {
  *
  *     get:
  *       tags: [Movies]
+ *       security: []
  *       summary: Get all movies
  *       responses:
  *         '200':
@@ -54,6 +56,7 @@ const {
  *   /movies/{id}:
  *     get:
  *       tags: [Movies]
+ *       security: []
  *       summary: Get a movie by ID
  *       parameters:
  *         - in: path
@@ -74,6 +77,7 @@ const {
  *
  *     put:
  *       tags: [Movies]
+ *       security: []
  *       summary: Update a movie by ID
  *       parameters:
  *         - in: path
@@ -102,6 +106,7 @@ const {
  *
  *     delete:
  *       tags: [Movies]
+ *       security: []
  *       summary: Delete a movie by ID
  *       parameters:
  *         - in: path

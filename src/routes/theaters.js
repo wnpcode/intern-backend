@@ -21,8 +21,7 @@ const {
  *   get:
  *     summary: Get all theaters
  *     tags: [Theaters]
- *     security:
- *       - BearerAuth: []
+ *     security: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -48,8 +47,7 @@ const {
  *   post:
  *     summary: Create a new theater
  *     tags: [Theaters]
- *     security:
- *       - BearerAuth: []
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -71,8 +69,7 @@ const {
  *   get:
  *     summary: Get a theater by ID
  *     tags: [Theaters]
- *     security:
- *       - BearerAuth: []
+ *     security: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -92,8 +89,7 @@ const {
  *   put:
  *     summary: Update a theater by ID
  *     tags: [Theaters]
- *     security:
- *       - BearerAuth: []
+ *     security: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -119,8 +115,7 @@ const {
  *   delete:
  *     summary: Delete a theater by ID
  *     tags: [Theaters]
- *     security:
- *       - BearerAuth: []
+ *     security: []
  *     parameters:
  *       - name: id
  *         in: path
