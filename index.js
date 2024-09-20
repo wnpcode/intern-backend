@@ -13,6 +13,7 @@ const app = express();
 
 const users_routes = require("./src/routes/users.js");
 const theaters_routes = require("./src/routes/theaters.js");
+const movies_routes = require("./src/routes/movies.js");
 const auth_routes = require("./src/routes/auth.js");
 const { authenticateToken } = require("./src/middlewares/authMiddleware.js");
 // swagger
@@ -91,8 +92,9 @@ app.use(express.json()); // parse json body content
 // routes
 // app.use("/products", products_routes);
 app.use("/auth", auth_routes);
+app.use("/theaters", theaters_routes);
+app.use("/movies", movies_routes);
 app.use("/users", authenticateToken, users_routes);
-app.use("/theaters", authenticateToken, theaters_routes);
 
 // Graceful shutdown
 process.on("SIGINT", async () => {
