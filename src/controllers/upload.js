@@ -2,6 +2,7 @@ const sharp = require("sharp");
 const fs = require("fs");
 
 const uploadSingle = async (req, res) => {
+  console.log(req.headers.host);
   try {
     fs.access("./uploads", (error) => {
       if (error) {
