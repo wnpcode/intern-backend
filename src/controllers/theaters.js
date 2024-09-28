@@ -1,4 +1,7 @@
+const { default: mongoose } = require("mongoose");
 const Theater = require("../models/Theater.js");
+
+const { ObjectId } = mongoose.Types;
 const getTheaters = async (req, res) => {
   try {
     const { page = 1, size = 5, name = "" } = req.query;
@@ -71,6 +74,45 @@ const deleteTheater = async (req, res) => {
     return res.status(404).json({ msg: "Theater not found" });
   }
 };
+const getComboTheaters = async (req, res) => {
+  try {
+    const { name = "" } = req.query;
+    let query = {};
+    if (name) query["name"] = { $regex: name, $options: "i" };
+    const theaters = await Theater.find(query, "name");
+    return res.status(200).json({
+      data: theaters,
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error });
+  }
+};
+const getTheatersByMovieId = async (req, res) => {
+  try {
+    const { name = "" } = req.query;
+    let query = {};
+    // if (name) query["name"] = { $regex: name, $options: "i" };
+    let id = new ObjectId(req.params._id);
+    console.log(query);
+    const theaters = await Theater.find(
+      {
+        _id: {
+          $in: [id],
+        },
+      },
+      "name"
+    );
+    return res.status(200).json({
+      data: theaters,
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error });
+  }
+};
 
 module.exports = {
   getTheaters,
@@ -78,4 +120,6 @@ module.exports = {
   createTheater,
   updateTheater,
   deleteTheater,
+  getComboTheaters,
+  getTheatersByMovieId,
 };

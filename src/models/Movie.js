@@ -111,6 +111,10 @@ const tomatoesSchema = new Schema({
 
 // Define the parent schema that includes the awards subdocument
 const moviesSchema = new Schema({
+  theaterId: {
+    type: [Schema.Types.ObjectId], // Always a string
+    required: true,
+  },
   awards: {
     type: awardsSchema,
     required: true,

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { authenticateToken } = require("../middlewares/authMiddleware.js");
 
 const {
   getTheaters,
@@ -7,7 +8,19 @@ const {
   createTheater,
   updateTheater,
   deleteTheater,
+  getComboTheaters,
+  getTheatersByMovieId,
 } = require("../controllers/theaters.js");
+router.get("/", getTheaters);
+router.get("/combo", getComboTheaters);
+router.get("/by_movie_id/:_id", getTheatersByMovieId);
+router.get("/:_id", getTheater);
+router.post("/", authenticateToken, createTheater);
+router.put("/:_id", authenticateToken, updateTheater);
+router.delete("/:_id", authenticateToken, deleteTheater);
+
+module.exports = router;
+
 /**
  * @swagger
  * tags:
@@ -47,7 +60,8 @@ const {
  *   post:
  *     summary: Create a new theater
  *     tags: [Theaters]
- *     security: []
+ *     security:
+ *         - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -89,7 +103,8 @@ const {
  *   put:
  *     summary: Update a theater by ID
  *     tags: [Theaters]
- *     security: []
+ *     security:
+ *         - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -115,7 +130,8 @@ const {
  *   delete:
  *     summary: Delete a theater by ID
  *     tags: [Theaters]
- *     security: []
+ *     security:
+ *         - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -128,6 +144,53 @@ const {
  *         description: Theater deleted
  *       404:
  *         description: Theater not found
+ */
+
+/**
+ * @swagger
+ * /theaters/combo:
+ *   get:
+ *     summary: Get combo theaters
+ *     tags: [Theaters]
+ *     security: []
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         type: string
+ *         default:
+ *     responses:
+ *       200:
+ *         description: List of theaters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ComboTheater'
+ */
+
+/**
+ * @swagger
+ * /theaters/by_movie_id/{_id}:
+ *   get:
+ *     summary: Get theaters by movie id
+ *     tags: [Theaters]
+ *     security: []
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         description: movie Id
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: List of theaters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ComboTheater'
  */
 
 /**
@@ -219,16 +282,16 @@ const {
  *        - location
  *        - theaterId
  *        - name
+ *    ComboTheater:
+ *      type: object
+ *      properties:
+ *        _id:
+ *          type: string
+ *          format: objectId
+ *          description: "Unique identifier for the theater Combo."
+ *        name:
+ *          type: string
+ *      required:
+ *        - _id
+ *        - name
  */
-
-router.get("/", getTheaters);
-
-router.get("/:_id", getTheater);
-
-router.post("/", createTheater);
-
-router.put("/:_id", updateTheater);
-
-router.delete("/:_id", deleteTheater);
-
-module.exports = router;

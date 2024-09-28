@@ -1,4 +1,6 @@
+const { default: mongoose } = require("mongoose");
 const Movie = require("../models/Movie.js");
+const { ObjectId } = mongoose.Types;
 const getMovies = async (req, res) => {
   try {
     const { page = 1, size = 5, name = "" } = req.query;
@@ -72,10 +74,54 @@ const deleteMovie = async (req, res) => {
   }
 };
 
+const setTheater = async (req, res) => {
+  try {
+    console.log(req.body);
+    let result = await Movie.findOneAndUpdate(
+      { _id: req.params._id },
+      { $set: { theaterId: req.body } },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    return res.status(200).json({ data: result, status: 200 });
+  } catch (error) {
+    return res.status(404).json({ msg: "Movie not found" });
+  }
+};
+
+const getMoviesByTheaterId = async (req, res) => {
+  try {
+    const { name = "" } = req.query;
+    let query = {};
+    // if (name) query["name"] = { $regex: name, $options: "i" };
+    let id = new ObjectId(req.params._id);
+    console.log(query);
+    const movies = await Movie.find(
+      {
+        theaterId: {
+          $in: [id],
+        },
+      },
+      "title"
+    );
+    return res.status(200).json({
+      data: movies,
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error });
+  }
+};
+
 module.exports = {
   getMovies,
   getMovie,
   createMovie,
   updateMovie,
   deleteMovie,
+  setTheater,
+  getMoviesByTheaterId,
 };
